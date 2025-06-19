@@ -1,0 +1,66 @@
+import mongoose, { Schema, Document } from 'mongoose';
+
+export interface IProduct extends Document {
+    name: string;
+    category: 'Pesticide' | 'Seed' | 'Fertilizer' | 'Other';
+    company: mongoose.Types.ObjectId;
+    description?: string;
+    price: number;
+    stock: number;
+    unit?: 'kg' | 'liter' | 'packet' | 'unit';
+    expiryDate: Date;
+    supplier?: mongoose.Types.ObjectId;
+    createdAt?: Date;
+    updatedAt?: Date;
+    status?: string;
+    isDeleted?: Boolean,
+    isBlock?: Boolean,
+}
+
+const ProductSchema: Schema<IProduct> = new Schema(
+    {
+        name: { type: String, required: true },
+
+        category: {
+            type: String,
+            enum: ['Pesticide', 'Seed', 'Fertilizer', 'Other'],
+            required: true,
+        },
+
+        company: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Company',
+            required: true,
+        },
+
+        description: { type: String },
+
+        price: { type: Number, required: true },
+
+        stock: { type: Number, required: true },
+
+        unit: {
+            type: String,
+            enum: ['kg', 'liter', 'packet', 'unit'],
+        },
+
+        expiryDate: { type: Date, required: true },
+
+        supplier: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Supplier',
+        },
+        isDeleted: {
+            type: Boolean,
+            default: false,
+        },
+        status: { type: String, enum: ["active", "inactive", "blocked"], default: "active" },
+        isBlock: {
+            type: Boolean,
+            default: false,
+        },
+    },
+    { timestamps: true }
+);
+
+export const Product = mongoose.model<IProduct>('Product', ProductSchema);
