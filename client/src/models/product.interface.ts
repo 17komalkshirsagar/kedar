@@ -13,5 +13,6 @@ export interface IProduct {
     isBlocked?: boolean;
     createdAt?: string;
     updatedAt?: string;
-    category?: 'Pesticide' | 'Seed' | 'Fertilizer' | 'Other'
+    category?: 'Pesticide' | 'Seed' | 'Fertilizer' | 'Other';
+    batchNumber?: string
 }

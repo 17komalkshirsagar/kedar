@@ -14,7 +14,7 @@ export interface IProduct extends Document {
     updatedAt?: Date;
     status?: string;
     isDeleted?: Boolean,
-    isBlock?: Boolean,
+    isBlock?: Boolean, batchNumber: String,
 }
 
 const ProductSchema: Schema<IProduct> = new Schema(
@@ -42,6 +42,10 @@ const ProductSchema: Schema<IProduct> = new Schema(
         unit: {
             type: String,
             enum: ['kg', 'liter', 'packet', 'unit'],
+        },
+        batchNumber: {
+            type: String,
+            required: true
         },
 
         expiryDate: { type: Date, required: true },

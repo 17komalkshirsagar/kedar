@@ -36,6 +36,7 @@ const productSchema = z.object({
     expiryDate: z.coerce.date(),
     supplier: z.string().optional(),
     status: z.enum(['active', 'inactive', 'blocked']).optional(),
+    batchNumber: z.string().min(1, { message: 'Batch number is required' })
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
@@ -50,7 +51,7 @@ const defaultValues: ProductFormData = {
     unit: 'kg',
     expiryDate: new Date(),
     supplier: '',
-    status: 'active',
+    status: 'active', batchNumber: '',
 };
 
 const ProductPage = () => {
@@ -89,6 +90,7 @@ const ProductPage = () => {
                 expiryDate: ((productData.expiryDate as any)?.split?.('T')[0]) ?? '',
                 supplier: (productData.supplier as any)?._id ?? '',
                 status: productData.status ?? 'active',
+                batchNumber: productData.batchNumber ?? '',
             });
         }
     }, [id, productData, companyData, data, reset]);
@@ -140,11 +142,20 @@ const ProductPage = () => {
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                        <div>
-                            <Label htmlFor="name">Product Name</Label>
-                            <Input id="name" {...register('name')} />
-                            {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                        <div className="flex gap-4">
+                            <div className="w-1/2">
+                                <Label htmlFor="name">Product Name</Label>
+                                <Input id="name" {...register('name')} />
+                                {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                            </div>
+
+                            <div className="w-1/2">
+                                <Label htmlFor="batchNumber">Batch Number</Label>
+                                <Input id="batchNumber" {...register('batchNumber')} />
+                                {errors.batchNumber && <p className="text-red-500 text-sm">{errors.batchNumber.message}</p>}
+                            </div>
                         </div>
+
 
                         <div className="flex gap-4">
                             <div className="w-1/2">

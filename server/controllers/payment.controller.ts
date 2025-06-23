@@ -7,17 +7,7 @@ import { Payment } from "../models/payment";
 import { createPaymentRules } from "../rules/payment.rules";
 import { Product } from "../models/product";
 
-// Create Payment
-// export const createPayment = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-//     const data = req.body;
-//     // const { isError, error } = customValidator(data, createPaymentRules);
 
-//     // if (isError) return res.status(422).json({ message: "Validation Error", error });
-
-//     const result = await Payment.create(data);
-//     invalidateCache("payments:*");
-//     res.status(200).json({ message: "Payment created successfully", result });
-// });
 
 
 export const createPayment = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<any> => {
@@ -65,7 +55,7 @@ export const getPayments = asyncHandler(async (req: Request, res: Response, next
             ? {
                 $or: [
                     { paymentReference: { $regex: searchQuery, $options: "i" } },
-                    // Add additional searchable fields here
+
                 ],
             }
             : {}),
@@ -86,10 +76,10 @@ export const getPayments = asyncHandler(async (req: Request, res: Response, next
     await redisClient.setex(
         cacheKey,
         3600,
-        JSON.stringify({ message: "Payments fetched successfully", result, pagination })
+        JSON.stringify({ message: "Payments fetchedd successfully", result, pagination })
     );
 
-    res.status(200).json({ message: "Payments fetched successfully", result, pagination });
+    res.status(200).json({ message: "Payments fetchedd successfully", result, pagination });
 });
 
 // Get Payment by ID

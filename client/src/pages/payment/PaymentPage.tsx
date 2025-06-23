@@ -16,6 +16,16 @@ import { useGetAllProductsQuery } from '../../redux/apis/product.api';
 import { useCreatePaymentMutation } from '../../redux/apis/payment.api';
 
 import { useRef } from "react";
+import Receipt from './Receipt';
+import {
+    Dialog,
+    DialogTrigger,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
+} from "../../components/ui/dialog";
 
 const paymentSchema = z.object({
     customerId: z.string().nonempty("Customer is required"),
@@ -47,8 +57,6 @@ const PaymentPage = () => {
     const { data: customers } = useGetAllCustomersQuery({});
     const { data: products } = useGetAllProductsQuery({});
     const [createPayment, { isSuccess: isAddSuccess, isError }] = useCreatePaymentMutation();
-
-    // const { setReceipt } = useReceipt();
     const searchMobileRef = useRef<HTMLInputElement>(null);
     const searchProductRef = useRef<HTMLInputElement>(null);
 
@@ -60,6 +68,7 @@ const PaymentPage = () => {
     const debouncedSearchMobile = useDebounce(searchMobile, 400);
     const debouncedSearchProduct = useDebounce(searchProduct, 400);
 
+    const [openReceiptModal, setOpenReceiptModal] = useState(false);
 
     const {
         register,
@@ -414,10 +423,23 @@ const PaymentPage = () => {
                         {errors.paymentMode && <p className="text-red-500">{errors.paymentMode.message}</p>}
                     </div>
 
-                    <Button type="submit" className="mt-4 bg-green-600">
+                    {/* <Button type="submit" className="mt-4 bg-green-600">
+                        Submit Payment
+                    </Button> */}
+                    <Button
+                        type="submit"
+                        className="mt-4 bg-green-600"
+                        onClick={() => setOpenReceiptModal(true)}
+                    >
                         Submit Payment
                     </Button>
+
                 </form>
+                <Dialog open={openReceiptModal} onOpenChange={setOpenReceiptModal}>
+                    <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+                        <Receipt />
+                    </DialogContent>
+                </Dialog>
             </CardContent>
         </Card>
     );
