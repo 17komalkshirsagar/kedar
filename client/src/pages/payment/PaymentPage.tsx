@@ -178,6 +178,9 @@ const PaymentPage = () => {
     useEffect(() => {
         if (isAddSuccess) {
             toast.success('Payment added successfully');
+
+            setOpenReceiptModal(true);
+
             reset({
                 customerId: '',
                 products: [],
@@ -190,6 +193,7 @@ const PaymentPage = () => {
             setSearchProduct('');
         }
     }, [isAddSuccess]);
+
 
 
     useEffect(() => {
@@ -423,13 +427,10 @@ const PaymentPage = () => {
                         {errors.paymentMode && <p className="text-red-500">{errors.paymentMode.message}</p>}
                     </div>
 
-                    {/* <Button type="submit" className="mt-4 bg-green-600">
-                        Submit Payment
-                    </Button> */}
+
                     <Button
                         type="submit"
                         className="mt-4 bg-green-600"
-                        onClick={() => setOpenReceiptModal(true)}
                     >
                         Submit Payment
                     </Button>
@@ -437,7 +438,7 @@ const PaymentPage = () => {
                 </form>
                 <Dialog open={openReceiptModal} onOpenChange={setOpenReceiptModal}>
                     <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
-                        <Receipt />
+                        <Receipt onClose={() => setOpenReceiptModal(false)} />
                     </DialogContent>
                 </Dialog>
             </CardContent>

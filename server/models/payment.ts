@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { Counter } from './Counter';
 
 export interface IPaymentProduct {
     product: mongoose.Types.ObjectId;
@@ -10,6 +11,9 @@ export interface IPayment extends Document {
     customer: mongoose.Types.ObjectId;
     products: IPaymentProduct[];
     totalAmount: number;
+    billNumber: string;
+
+    year: number;
     paidAmount: number;
     pendingAmount?: number;
     paymentMode: 'Cash' | 'UPI' | 'Bank Transfer' | 'Credit' | 'Other';
@@ -20,6 +24,7 @@ export interface IPayment extends Document {
     status: 'active' | 'inactive';
     createdAt?: Date;
     updatedAt?: Date;
+
 }
 const PaymentSchema: Schema<IPayment> = new Schema(
     {
@@ -42,7 +47,8 @@ const PaymentSchema: Schema<IPayment> = new Schema(
             enum: ['Cash', 'UPI', 'Bank Transfer', 'Credit', 'Other'],
             required: true,
         },
-
+        billNumber: { type: String, unique: true },
+        year: { type: Number },
         paymentStatus: {
             type: String,
             enum: ['Paid', 'Unpaid', 'Partial'],
@@ -61,16 +67,22 @@ const PaymentSchema: Schema<IPayment> = new Schema(
     },
     { timestamps: true }
 );
+PaymentSchema.pre('save', async function (next) {
+    if (this.isNew) {
+        const currentYear = new Date().getFullYear().toString();
 
-// Pre-save hook for calculating pendingAmount and paymentStatus
-PaymentSchema.pre<IPayment>('save', function (next) {
-    this.pendingAmount = this.totalAmount - this.paidAmount;
-    if (this.pendingAmount <= 0) this.paymentStatus = 'Paid';
-    else if (this.paidAmount === 0) this.paymentStatus = 'Unpaid';
-    else this.paymentStatus = 'Partial';
+        const counter = await Counter.findOneAndUpdate(
+            { id: currentYear },
+            { $inc: { seq: 1 } },
+            { new: true, upsert: true }
+        );
+
+        const paddedSeq = counter.seq.toString().padStart(4, '0');
+        this.billNumber = `${currentYear}-${paddedSeq}`;
+        this.year = Number(currentYear);
+    }
     next();
 });
-
 
 
 

@@ -92,6 +92,11 @@ const ProductTable = () => {
             cell: (info) => info.getValue(),
         },
         {
+            accessorKey: 'batchNumber',
+            header: 'Batch',
+            cell: (info) => info.getValue(),
+        },
+        {
             accessorKey: 'status',
             header: 'Status',
             cell: ({ row }) => {

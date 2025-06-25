@@ -14,7 +14,6 @@ import { Toast } from '../../components/ui/toast';
 import Loader from '../../components/ui/Loader';
 import TableData from '../../components/ui/TableData';
 import { useDebounce } from '../../utils/useDebounce';
-
 const CustomerTable = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
@@ -31,6 +30,7 @@ const CustomerTable = () => {
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
     });
+    const [expandedCustomerId, setExpandedCustomerId] = useState<string | null>(null);
 
     const [blockCustomer] = useBlockCustomerMutation();
     const [deleteCustomer] = useDeleteCustomerMutation();
@@ -112,7 +112,7 @@ const CustomerTable = () => {
             header: 'Actions',
             cell: ({ row }) => {
                 const isBlocked = row.original.isBlock;
-
+                // const customerId = row.original._id;
                 return (
                     <div className="flex gap-3">
                         <button
@@ -133,6 +133,7 @@ const CustomerTable = () => {
                         >
                             {isBlocked ? 'Unblock' : 'Block'}
                         </button>
+
                     </div>
                 );
             }
@@ -185,7 +186,10 @@ const CustomerTable = () => {
                             onGlobalFilterChange={searchQuery}
                             initialPagination={pagination}
                             totalPages={searchData?.pagination?.totalPages}
+                            expandedCustomerId={expandedCustomerId}
+                            onExpand={(id: any) => setExpandedCustomerId(prev => (prev === id ? null : id))}
                         />
+
                     </div>
                 </div>
             </div>
@@ -193,4 +197,7 @@ const CustomerTable = () => {
     );
 };
 
-export default CustomerTable;
+
+export default CustomerTable
+
+

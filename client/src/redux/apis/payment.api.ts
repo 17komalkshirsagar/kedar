@@ -112,16 +112,20 @@ export const paymentApi = createApi({
                 error.data?.message,
             providesTags: ["payment"],
         }),
-        getCustomerPaymentHistory: builder.query<IPayment, string>({
+        getCustomerPaymentHistory: builder.query<{ result: IPayment[]; totals: any; purchaseInfo: any; }, string>({
             query: (customerId) => ({
                 url: `/payments/history/${customerId}`,
                 method: "GET",
             }),
-            transformResponse: (data: { result: IPayment }) => data.result,
+            transformResponse: (data: {
+                result: IPayment[]; totals: any; purchaseInfo: any;
+            }) => ({ result: data.result, totals: data.totals, purchaseInfo: data.purchaseInfo, }),
             transformErrorResponse: (error: { status: number; data: { message: string } }) =>
                 error.data?.message,
             providesTags: ["payment"],
         }),
+
+
     }),
 });
 

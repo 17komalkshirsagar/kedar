@@ -1,5 +1,6 @@
 export interface CreatePayment {
     customer: string;
+
     products: {
         product: string;
         quantity: number;

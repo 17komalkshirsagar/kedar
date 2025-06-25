@@ -17,6 +17,7 @@ import employeeRouter from "./routes/employee.routes";
 import deliveryRouter from "./routes/delivery.routes";
 import notificationLogRouter from "./routes/notificationLog.routes";
 import paymentRouter from "./routes/payment.routes";
+import receiptEmailRouter from "./routes/receipt.routes";
 // import authRouter from "./routes/auth.routes";
 
 // import rateLimit from "express-rate-limit";
@@ -49,6 +50,7 @@ app.use("/api/v1/payment", paymentRouter)
 app.use("/api/v1/employee", employeeRouter)
 app.use("/api/v1/supplier", supplierRouter)
 app.use("/api/v1/product", productRouter)
+app.use("/api/v1/send-receipt", receiptEmailRouter)
 
 // app.use("/api/v1/appointment", protectedRoute, checkSubscription, appointmentRouter)
 

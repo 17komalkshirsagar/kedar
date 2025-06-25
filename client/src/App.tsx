@@ -5,6 +5,7 @@ import SupplierTable from './pages/supplier/SupplierTable';
 import ProductTable from './pages/product/ProductTable';
 import PaymentPage from './pages/payment/PaymentPage';
 import Receipt from './pages/payment/Receipt';
+import CustomerHistory from './pages/customer/CustomerHistory';
 
 const Loader = () => (
   <div className="flex justify-center items-center h-screen">
@@ -58,6 +59,7 @@ const App = () => {
         <Route path="/supplier-table" element={<SupplierTable />} />
         <Route path="/bill" element={<PaymentPage />} />
         <Route path="/receipt" element={<Receipt />} />
+        <Route path="/customer-history/:customerId" element={<CustomerHistory />} />
         <Route path="*" element={<p className="text-center mt-10 text-red-500">404 - Page Not Found</p>} />
       </Routes>
     </Suspense>

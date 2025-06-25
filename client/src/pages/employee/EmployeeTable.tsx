@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { ColumnDef, PaginationState } from '@tanstack/react-table'
 import { Briefcase } from 'lucide-react'
 import { toast } from 'sonner'
-
+import TableData from '../../components/ui/TableData';
 import Loader from '../../components/ui/Loader'
-import TableData from '../../components/ui/TableData'
+
 import { useDebounce } from '../../utils/useDebounce'
 
 import {
